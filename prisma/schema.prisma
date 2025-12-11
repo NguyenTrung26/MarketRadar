@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Trend {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  growth    Float
+  volume    Int
+  sentiment Float
+  timestamp DateTime @default(now())
+  
+  reports   Report[] @relation("ReportTrends")
+}
+
+model Source {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // "News", "Social", "Report", "Forum"
+  reliability Float
+  logoUrl     String?
+  reports     Report[]
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  title       String
+  summary     String
+  date        DateTime @default(now())
+  url         String?
+  
+  sourceId    String
+  source      Source   @relation(fields: [sourceId], references: [id])
+  
+  trends      Trend[]  @relation("ReportTrends")
+}
