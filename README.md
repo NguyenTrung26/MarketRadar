@@ -1,37 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Market Radar 🚀
 
-## Getting Started
+Market Radar is a real-time market intelligence platform designed to track emerging trends across various sectors (Tech, Finance, Health, etc.). It features a premium "Glassmorphism" UI, interactive charts, and production-grade architecture.
 
-First, run the development server:
+![Dashboard Preview](/search_result_video.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ✨ Key Features
+
+- **Real-time Dashboard**: Live feed of market activities and trend updates.
+- **Interactive Charts**: Visualizations using Recharts (Area charts for growth).
+- **Search & Filtering**: Filter trends by keyword or category via URL query parameters (Shareable links).
+- **Report Details**: Deep-dive analysis pages for specific market reports.
+- **Settings & Alerts**: Configure notification preferences (Email/Push) and thresholds.
+- **Follow System**: "Star" trends to follow them (Server Action demo).
+
+## 🛠 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Components, Server Actions)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS (with `tailwind-merge`, `clsx`, Custom Animations)
+- **State Management**: React Query (TanStack Query) + URL State
+- **Validation**: Zod
+- **Testing**: Vitest + React Testing Library
+- **Quality**: ESLint, Prettier, Husky (Pre-commit hooks)
+
+## 📂 Project Structure
+
+This project follows a **Feature-based Architecture** for scalability:
+
+```
+src/
+├── actions/            # Server Actions (e.g., trend-actions.ts)
+├── app/                # Next.js App Router (Pages & Layouts)
+├── components/         # Shared UI Components
+├── features/           # Domain-specific logic & components
+│   ├── dashboard/      # Dashboard cards, charts, feed
+│   ├── reports/        # Report lists, details
+│   └── settings/       # Settings forms
+├── lib/                # Utilities, Types, Zod Schemas
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Prerequisites
+- Node.js 18+ installed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Installation
+```bash
+npm install
+```
 
-## Learn More
+### 3. Run Development Server
+```bash
+npm run dev
+```
+> **Note**: If you encounter port conflicts, use `npm run dev -- -p 3006`.
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Running Tests
+```bash
+npm run test
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 5. Linting
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ⚠️ Database Note
+Currently, the project runs in **Mock Mode** using in-memory data (`src/lib/data/mockService.ts`) due to network restrictions preventing Prisma binaries from downloading. 
+- **Server Actions** are implemented to demonstrate functionality (e.g., Following a trend) but data resets on server restart.
+- To enable real DB: Fix network -> Run `npx prisma generate` -> Update services to use `prisma` client.
 
-## Deploy on Vercel
+## 🎨 Design System
+The UI uses a custom **Premium Dark Theme** with:
+- **Glassmorphism**: Backdrop blur and translucent borders.
+- **Gradients**: Subtle purple/blue glows using absolute positioned blobs.
+- **Typography**: Inter (Body) + Outfit (Headings).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# MarketRadar
+---
+*Built with ❤️ by Antigravity*

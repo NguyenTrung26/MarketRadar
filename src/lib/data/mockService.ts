@@ -1,4 +1,4 @@
-import { Trend, MarketReport, Source } from "../types";
+import { Trend, MarketReport } from "../types";
 
 const TRENDS: Trend[] = [
     { id: "1", name: "Generative AI Video", category: "Tech", growth: 125, volume: 45000, sentiment: 0.8, timestamp: new Date().toISOString() },
@@ -8,17 +8,29 @@ const TRENDS: Trend[] = [
     { id: "5", name: "Sustainable Fashion", category: "Consumer", growth: 22, volume: 25000, sentiment: 0.85, timestamp: new Date().toISOString() },
 ];
 
-const SOURCES: Source[] = [
-    { id: "s1", name: "TechCrunch", type: "News", reliability: 0.9 },
-    { id: "s2", name: "Reddit /r/investing", type: "Forum", reliability: 0.6 },
-    { id: "s3", name: "Bloomberg", type: "News", reliability: 0.95 },
-    { id: "s4", name: "Twitter/X", type: "Social", reliability: 0.5 },
-];
+// const SOURCES: Source[] = [
+//     { id: "s1", name: "TechCrunch", type: "News", reliability: 0.9 },
+//     { id: "s2", name: "Reddit /r/investing", type: "Forum", reliability: 0.6 },
+//     { id: "s3", name: "Bloomberg", type: "News", reliability: 0.95 },
+//     { id: "s4", name: "Twitter/X", type: "Social", reliability: 0.5 },
+// ];
 
-export async function getTopTrends(): Promise<Trend[]> {
+export async function getTopTrends(query?: string, category?: string): Promise<Trend[]> {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 500));
-    return TRENDS.sort((a, b) => b.growth - a.growth);
+
+    let filtered = [...TRENDS];
+
+    if (query) {
+        const lowerQuery = query.toLowerCase();
+        filtered = filtered.filter(t => t.name.toLowerCase().includes(lowerQuery));
+    }
+
+    if (category && category !== "All") {
+        filtered = filtered.filter(t => t.category === category);
+    }
+
+    return filtered.sort((a, b) => b.growth - a.growth);
 }
 
 export async function getRecentReports(): Promise<MarketReport[]> {

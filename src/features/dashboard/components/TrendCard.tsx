@@ -1,6 +1,7 @@
 import { Trend } from "@/lib/types";
 import { ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FollowButton } from "./FollowButton";
 
 interface TrendCardProps {
     trend: Trend;
@@ -11,10 +12,13 @@ export function TrendCard({ trend }: TrendCardProps) {
 
     return (
         <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all hover:bg-white/10 hover:shadow-2xl hover:shadow-primary/10">
-            <div className="flex items-start justify-between">
-                <div>
-                    <p className="text-sm font-medium text-muted-foreground">{trend.category}</p>
-                    <h3 className="mt-1 text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">
+            <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                        <p className="text-sm font-medium text-muted-foreground">{trend.category}</p>
+                        {trend.id && <FollowButton trendId={trend.id} />}
+                    </div>
+                    <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">
                         {trend.name}
                     </h3>
                 </div>
@@ -49,6 +53,6 @@ export function TrendCard({ trend }: TrendCardProps) {
 
             {/* Decorative gradient blob */}
             <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/10 blur-3xl transition-all group-hover:bg-primary/20" />
-        </div>
+        </div >
     );
 }

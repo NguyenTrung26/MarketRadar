@@ -3,12 +3,22 @@ import { TrendCard } from "@/features/dashboard/components/TrendCard";
 import { TrendChart } from "@/features/dashboard/components/TrendChart";
 import { RecentReports } from "@/features/reports/components/RecentReports";
 import { RealTimeFeed } from "@/features/dashboard/components/RealTimeFeed";
-import { Radar } from "lucide-react";
+import { DashboardControls } from "@/features/dashboard/components/DashboardControls";
+import { Radar, Settings } from "lucide-react";
+import Link from "next/link";
 
 export const revalidate = 0; // Disable caching for demo purposes
 
-export default async function Home() {
-    const trends = await getTopTrends();
+interface HomeProps {
+    searchParams: Promise<{
+        q?: string;
+        category?: string;
+    }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+    const params = await searchParams;
+    const trends = await getTopTrends(params.q, params.category);
     const reports = await getRecentReports();
 
     return (
@@ -28,7 +38,11 @@ export default async function Home() {
                         Real-time trend analysis and market intelligence platform.
                     </p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
+                    <Link href="/settings" className="p-2 rounded-full border border-white/10 hover:bg-white/5 text-muted-foreground hover:text-white transition-colors" title="Settings">
+                        <Settings className="h-5 w-5" />
+                    </Link>
+
                     {/* Placeholder for future Actions */}
                     <div className="text-right hidden md:block">
                         <p className="text-xs text-muted-foreground uppercase tracking-widest">System Status</p>
@@ -43,11 +57,20 @@ export default async function Home() {
                 </div>
             </header>
 
+            {/* Controls */}
+            <DashboardControls />
+
             {/* KPI Cards */}
             <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-                {trends.map((trend) => (
-                    <TrendCard key={trend.id} trend={trend} />
-                ))}
+                {trends.length > 0 ? (
+                    trends.map((trend) => (
+                        <TrendCard key={trend.id} trend={trend} />
+                    ))
+                ) : (
+                    <div className="col-span-full py-12 text-center text-muted-foreground border border-dashed border-white/10 rounded-xl">
+                        No trends found matching your criteria.
+                    </div>
+                )}
             </section>
 
             {/* Main Content Grid */}
